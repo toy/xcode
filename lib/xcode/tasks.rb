@@ -40,6 +40,21 @@ module Xcode
           end
         end
       end
+
+      desc 'current build number'
+      task :build do
+        puts project.build
+      end
+
+      namespace :build do
+        desc 'increment build number'
+        task :increment do
+          build = project.build
+          if build.increment.write
+            $stderr.puts "Incremented build number to #{build}"
+          end
+        end
+      end
     end
   end
 end

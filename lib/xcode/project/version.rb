@@ -2,15 +2,13 @@ require 'plist'
 
 module Xcode
   class Project
-    class Version
-      attr_reader :plist_path
+    class Version < PlistChanger
       attr_reader :major, :minor, :patch
 
-      VERSION_KEY = 'CFBundleShortVersionString'
+      KEY = 'CFBundleShortVersionString'
 
-      def initialize(plist_path = 'Info.plist')
-        @plist_path = plist_path
-        set(plist[VERSION_KEY])
+      def to_s
+        "#{major}.#{minor}.#{patch}".sub(/\.0/, '')
       end
 
       def set(string)
@@ -37,22 +35,6 @@ module Xcode
       def bump_patch
         @patch += 1
         self
-      end
-
-      def to_s
-        "#{major}.#{minor}.#{patch}".sub(/\.0/, '')
-      end
-
-      def write
-        plist.tap do |plist|
-          plist[VERSION_KEY] = to_s
-        end.save_plist(plist_path)
-      end
-
-    private
-
-      def plist
-        Plist::parse_xml(plist_path)
       end
     end
   end
