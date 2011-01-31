@@ -1,15 +1,14 @@
+require 'fspath'
+
 module Xcode
   class Tasks
     autoload :Project, 'xcode/project'
 
     attr_reader :project
 
-    def initialize(&block)
-      project_paths = Dir['*.xcodeproj']
-      project_path = (Dir["#{File.basename(Dir.pwd)}.xcodeproj"] | project_paths).first
-      unless project_path
-        raise "no project found"
-      end
+    def initialize(project_name = nil, &block)
+      project_path = FSPath("#{project_name || File.basename(Dir.pwd)}.xcodeproj")
+      abort "project #{project_path} not found" unless project_path.directory?
       @project = Project.new(project_path)
       block.call(project)
       define_tasks
@@ -18,6 +17,42 @@ module Xcode
     def define_tasks
       return if @defined_tasks
       @defined_tasks = true
+
+      desc 'build'
+      task :build do
+        arguments = %w[xcodebuild]
+        arguments += %W[-project #{project.path}]
+        arguments += %W[-configuration #{project.configuration}]
+        arguments += project.variables.map{ |key, value| "#{key}=#{value}" }
+        arguments += %w[clean build]
+
+        sh *arguments
+      end
+
+      desc 'pack'
+      task :pack do
+        pkg_dir = FSPath('pkg')
+        pack_path = pkg_dir + "#{project.name}-#{project.version}.zip"
+        if pack_path.exist?
+          abort "#{pack_path} already exists"
+        else
+          Rake::Task['build'].invoke
+
+          products = []
+          objects = project.config.root['objects']
+          objects.each do |_, object|
+            if reference = object['productReference']
+              products << objects[reference]['path']
+            end
+          end
+
+          arguments = %w[ditto -c -k]
+          arguments += products.map{ |product| FSPath('build') / project.configuration / product }.select(&:exist?)
+          arguments << pack_path
+
+          sh *arguments
+        end
+      end
 
       desc 'current version'
       task :version do

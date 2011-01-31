@@ -1,3 +1,5 @@
+require 'fspath'
+
 module Xcode
   class Project
     class Config
@@ -8,8 +10,8 @@ module Xcode
 
       attr_reader :path, :pbxproj_path, :root
       def initialize(path)
-        @path = path
-        @pbxproj_path = File.join(path, 'project.pbxproj')
+        @path = FSPath(path)
+        @pbxproj_path = path / 'project.pbxproj'
         parse
       end
 

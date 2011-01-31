@@ -1,3 +1,5 @@
+require 'fspath'
+
 module Xcode
   class Project
     autoload :PlistChanger, 'xcode/project/plist_changer'
@@ -7,7 +9,20 @@ module Xcode
 
     attr_reader :path
     def initialize(path)
-      @path = path
+      @path = FSPath(path)
+    end
+
+    def name
+      path.basename(path.extname).to_s
+    end
+
+    def variables
+      @variables ||= {}
+    end
+
+    attr_writer :configuration
+    def configuration
+      @configuration ||= 'Release'
     end
 
     def version
