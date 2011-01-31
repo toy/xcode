@@ -32,7 +32,8 @@ Gem::Specification.new do |s|
     "lib/xcode/project/config/object_node.rb",
     "lib/xcode/project/plist_changer.rb",
     "lib/xcode/project/version.rb",
-    "lib/xcode/tasks.rb"
+    "lib/xcode/tasks.rb",
+    "xcode.gemspec"
   ]
   s.homepage = %q{http://github.com/toy/xcode}
   s.licenses = ["MIT"]
