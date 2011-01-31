@@ -5,7 +5,12 @@ module Xcode
     attr_reader :project
 
     def initialize(&block)
-      @project = Project.new
+      project_paths = Dir['*.xcodeproj']
+      project_path = (Dir["#{File.basename(Dir.pwd)}.xcodeproj"] | project_paths).first
+      unless project_path
+        raise "no project found"
+      end
+      @project = Project.new(project_path)
       block.call(project)
       define_tasks
     end
