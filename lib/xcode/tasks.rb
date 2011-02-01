@@ -1,6 +1,4 @@
-require 'fspath'
-require 'shellwords'
-require 'tempfile'
+require 'pathname'
 
 module Xcode
   class Tasks
@@ -9,7 +7,7 @@ module Xcode
     attr_reader :project
 
     def initialize(project_name = nil, &block)
-      project_path = FSPath("#{project_name || File.basename(Dir.pwd)}.xcodeproj")
+      project_path = Pathname("#{project_name || File.basename(Dir.pwd)}.xcodeproj")
       abort "project #{project_path} not found" unless project_path.directory?
       @project = Project.new(project_path)
       block.call(project)
@@ -22,39 +20,25 @@ module Xcode
 
       desc 'build'
       task :build do
-        arguments = %w[xcodebuild]
-        arguments += %W[-project #{project.path}]
-        arguments += %W[-configuration #{project.configuration}]
-        arguments += project.variables.map{ |key, value| "#{key}=#{value}" }
-        arguments += %w[clean build]
-
-        sh *arguments
+        packer = project.packer
+        if packer.build
+          $stderr.puts "Built #{packer.product_names.join(', ')}"
+        end
       end
 
       desc 'pack'
       task :pack do
-        pkg_dir = FSPath('pkg')
-        pkg_dir.mkpath
-        pack_name = "#{project.name}-#{project.version}"
-        pack_path = pkg_dir + "#{pack_name}.tbz"
-        if pack_path.exist?
-          abort "#{pack_path} already exists"
-        else
-          Rake::Task['build'].invoke
+        packer = project.packer
+        if packer.pack
+          $stderr.puts "Packed #{packer.product_names.join(', ')} to #{packer.pack_path}"
+        end
+      end
 
-          products = []
-          objects = project.config.root['objects']
-          objects.each do |_, object|
-            if reference = object['productReference']
-              products << objects[reference]['path']
-            end
-          end
-          products = products.map{ |product| FSPath('build') / project.configuration / product }.select(&:exist?)
-
-          arguments = %W[tar -cjf #{pack_path}]
-          arguments += products
-
-          sh *arguments
+      desc 'release'
+      task :release do
+        packer = project.packer
+        if url = packer.release
+          $stderr.puts "Released #{packer.product_names.join(', ')} as #{packer.pack_path} to #{url}"
         end
       end
 

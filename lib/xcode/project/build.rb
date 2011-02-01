@@ -1,5 +1,3 @@
-require 'plist'
-
 module Xcode
   class Project
     class Build < PlistChanger

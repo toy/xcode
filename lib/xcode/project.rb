@@ -1,15 +1,14 @@
-require 'fspath'
-
 module Xcode
   class Project
     autoload :PlistChanger, 'xcode/project/plist_changer'
     autoload :Version,      'xcode/project/version'
     autoload :Build,        'xcode/project/build'
     autoload :Config,       'xcode/project/config'
+    autoload :Packer,       'xcode/project/packer'
 
     attr_reader :path
     def initialize(path)
-      @path = FSPath(path)
+      @path = Pathname(path)
     end
 
     def name
@@ -35,6 +34,10 @@ module Xcode
 
     def config
       Config.new(path)
+    end
+
+    def packer
+      Packer.new(self)
     end
   end
 end
