@@ -1,4 +1,6 @@
 require 'fspath'
+require 'shellwords'
+require 'tempfile'
 
 module Xcode
   class Tasks
@@ -32,7 +34,9 @@ module Xcode
       desc 'pack'
       task :pack do
         pkg_dir = FSPath('pkg')
-        pack_path = pkg_dir + "#{project.name}-#{project.version}.zip"
+        pkg_dir.mkpath
+        pack_name = "#{project.name}-#{project.version}"
+        pack_path = pkg_dir + "#{pack_name}.tbz"
         if pack_path.exist?
           abort "#{pack_path} already exists"
         else
@@ -45,10 +49,10 @@ module Xcode
               products << objects[reference]['path']
             end
           end
+          products = products.map{ |product| FSPath('build') / project.configuration / product }.select(&:exist?)
 
-          arguments = %w[ditto -c -k]
-          arguments += products.map{ |product| FSPath('build') / project.configuration / product }.select(&:exist?)
-          arguments << pack_path
+          arguments = %W[tar -cjf #{pack_path}]
+          arguments += products
 
           sh *arguments
         end
