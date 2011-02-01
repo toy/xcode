@@ -5,6 +5,7 @@ module Xcode
     autoload :Build,        'xcode/project/build'
     autoload :Config,       'xcode/project/config'
     autoload :Packer,       'xcode/project/packer'
+    autoload :Tagger,       'xcode/project/tagger'
 
     attr_reader :path
     def initialize(path)
@@ -38,6 +39,10 @@ module Xcode
 
     def packer
       Packer.new(self)
+    end
+
+    def tagger
+      Tagger.new(self)
     end
   end
 end

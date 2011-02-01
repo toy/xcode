@@ -42,6 +42,14 @@ module Xcode
         end
       end
 
+      desc 'tag'
+      task :tag do
+        tagger = project.tagger
+        if tagger.tag
+          $stderr.puts "Tagged with #{tagger.version}"
+        end
+      end
+
       desc 'current version'
       task :version do
         puts project.version
