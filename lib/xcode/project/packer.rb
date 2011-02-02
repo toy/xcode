@@ -40,6 +40,7 @@ module Xcode
         arguments = %w[xcodebuild]
         arguments += %W[-project #{project.path}]
         arguments += %W[-configuration #{project.configuration}]
+        arguments += %w[-nodependencies]
         arguments += project.variables.map{ |key, value| "#{key}=#{value}" }
         arguments += %w[clean build]
 
