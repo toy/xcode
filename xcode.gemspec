@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{xcode}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ivan Kuchin"]
-  s.date = %q{2011-02-02}
+  s.date = %q{2011-02-05}
   s.extra_rdoc_files = [
     "LICENSE-xcodeide",
     "LICENSE.txt",
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/xcode.rb",
     "lib/xcode/project.rb",
-    "lib/xcode/project/build.rb",
+    "lib/xcode/project/build_number.rb",
     "lib/xcode/project/config.rb",
     "lib/xcode/project/config/array_node.rb",
     "lib/xcode/project/config/decomment.rb",
