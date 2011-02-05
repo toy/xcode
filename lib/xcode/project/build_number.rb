@@ -1,6 +1,6 @@
 module Xcode
   class Project
-    class Build < PlistChanger
+    class BuildNumber < PlistChanger
       attr_reader :number
 
       KEY = 'CFBundleVersion'
@@ -14,7 +14,7 @@ module Xcode
           @number = $1.to_i
           self
         else
-          raise "Can't parse build #{string.inspect}"
+          raise "Can't parse build number #{string.inspect}"
         end
       end
 

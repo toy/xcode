@@ -2,7 +2,7 @@ module Xcode
   class Project
     autoload :PlistChanger, 'xcode/project/plist_changer'
     autoload :Version,      'xcode/project/version'
-    autoload :Build,        'xcode/project/build'
+    autoload :BuildNumber,  'xcode/project/build_number'
     autoload :Config,       'xcode/project/config'
     autoload :Packer,       'xcode/project/packer'
     autoload :Tagger,       'xcode/project/tagger'
@@ -29,8 +29,8 @@ module Xcode
       Version.new
     end
 
-    def build
-      Build.new
+    def build_number
+      BuildNumber.new
     end
 
     def config
