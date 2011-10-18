@@ -4,22 +4,22 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{xcode}
-  s.version = "0.1.3"
+  s.name = "xcode"
+  s.version = "0.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ivan Kuchin"]
-  s.date = %q{2011-02-05}
+  s.date = "2011-10-18"
   s.extra_rdoc_files = [
     "LICENSE-xcodeide",
     "LICENSE.txt",
-    "README.md"
+    "README.markdown"
   ]
   s.files = [
     ".tmignore",
     "LICENSE-xcodeide",
     "LICENSE.txt",
-    "README.md",
+    "README.markdown",
     "Rakefile",
     "VERSION",
     "lib/xcode.rb",
@@ -37,11 +37,11 @@ Gem::Specification.new do |s|
     "lib/xcode/tasks.rb",
     "xcode.gemspec"
   ]
-  s.homepage = %q{http://github.com/toy/xcode}
+  s.homepage = "http://github.com/toy/xcode"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.0}
-  s.summary = %q{Rake tasks to deploy xcode project}
+  s.rubygems_version = "1.8.11"
+  s.summary = "Rake tasks to deploy xcode project"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
