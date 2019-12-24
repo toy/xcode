@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.name        = 'xcode'
   s.version     = '0.1.6'
   s.summary     = %q{Rake tasks to deploy xcode project}
-  s.homepage    = "http://github.com/toy/#{s.name}"
+  s.homepage    = "https://github.com/toy/#{s.name}"
   s.authors     = ['Ivan Kuchin']
   s.license     = 'MIT'
 
